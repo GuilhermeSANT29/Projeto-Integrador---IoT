@@ -9,10 +9,10 @@
 
 ## 👥 Integrantes
 
-* William Belarmino da Silva
-* Ana Souza
-* Carlos Lima
-* Mariana Rocha
+* Guilherme Santos
+* Arthur Murilo
+* Maria Eduarda
+* Jose Henrique
 
 ---
 
@@ -141,12 +141,6 @@ Exemplos:
 
 ---
 
-## 🚧 Status do Projeto
-
-🟡 Em desenvolvimento
-
----
-
 ## 📌 Próximos Passos
 
 * [ ] Finalizar modelagem do sistema
@@ -164,4 +158,4 @@ Este projeto é destinado exclusivamente para fins acadêmicos.
 
 ## ⭐ Contribuição
 
-Este projeto foi desenvolvido como parte de um projeto integrador educacional.
+Este projeto foi desenvolvido como parte de um teste Academico.
