@@ -1,7 +1,7 @@
 # 🚀 Projeto Integrador - IoT Grupo Alpha
 
 ![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Versão](https://img.shields.io/badge/version-2.0-blue)
+![Versão](https://img.shields.io/badge/version-1.0-blue)
 ![Plataforma](https://img.shields.io/badge/platform-ESP8266-green)
 ![Licença](https://img.shields.io/badge/license-Acadêmico-lightgrey)
 
