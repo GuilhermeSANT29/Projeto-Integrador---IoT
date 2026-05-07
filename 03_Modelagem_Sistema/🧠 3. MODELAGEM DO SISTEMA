@@ -1,0 +1,86 @@
+🔁 FLUXO GERAL DO SISTEMA
+
+Seu sistema com ESP8266 funciona assim:
+
+ENTRADA (sensores)
+    ↓
+LEITURA (ESP8266)
+    ↓
+PROCESSAMENTO (regras)
+    ↓
+DECISÃO (normal / alerta)
+    ↓
+AÇÃO (LED / buzzer)
+    ↓
+ENVIO (TCP/IP → API)
+
+📡 ENTRADAS DO SISTEMA
+
+os componentes:
+
+Potenciômetro (A0)
+Sensor IR (D6)
+Botão (se tiver)
+LED RGB (D4)
+Buzzer (D5)
+
+⚙️ VARIÁVEIS DO SISTEMA
+
+potenciometro → 0 a 1023
+ir → 0 ou 1
+estadoSistema → NORMAL / ALERTA
+buzzer → ligado/desligado
+led → cor/status
+
+🚨 REGRAS DO SISTEMA 
+
+📊 REGRAS DEFINIDAS
+
+🔴 REGRA 1 — ALERTA DE POTENCIÔMETRO
+SE potenciômetro > 700
+ENTÃO estado = ALERTA
+E ligar buzzer
+E acender LED vermelho
+
+🟡 REGRA 2 — NORMALIDADE
+SE potenciômetro <= 700
+ENTÃO estado = NORMAL
+E buzzer desligado
+E LED verde
+
+🔵 REGRA 3 — SENSOR IR
+SE IR = 1
+ENTÃO registrar evento "MOVIMENTO DETECTADO"
+E enviar para API
+
+⚠️ REGRA 4 — SEGURANÇA DO SISTEMA
+SE múltiplos alertas consecutivos
+ENTÃO estado = CRÍTICO
+
+🔄 FLUXO DE DECISÃO (O QUE VOCÊ VAI DESCREVER NO TRABALHO)
+LER sensores
+    ↓
+VERIFICAR regras
+    ↓
+DECIDIR estado
+    ↓
+EXECUTAR ação (LED / buzzer)
+    ↓
+GERAR JSON
+    ↓
+ENVIAR via Wi-Fi (TCP/IP)
+
+📦 EXEMPLO DE ESTADO FINAL DO SISTEMA
+{
+  "potenciometro": 750,
+  "ir": 1,
+  "estado": "ALERTA",
+  "buzzer": 1,
+  "led": "vermelho"
+}
+
+🧠 ANÁLISE 
+O sistema foi modelado para funcionar em tempo real
+As decisões são baseadas em limiares de sensores
+O ESP8266 atua como processador e comunicador
+O sistema gera respostas automáticas (IoT industrial)
