@@ -1,0 +1,29 @@
+C++
+/*
+  Blink Test - ESP8266 Wemos D1
+  Validação da Configuração do Ambiente
+*/
+
+#define LED_BUILTIN D4   // GPIO2 - LED onboard do Wemos D1
+
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(115200);
+  
+  Serial.println("\n=========================================");
+  Serial.println("   Teste de Configuração - ESP8266 D1   ");
+  Serial.println("   Grupo Alpha - SENAI Guarulhos        ");
+  Serial.println("=========================================\n");
+  
+  Serial.println("LED Builtin (D4) piscando...");
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, LOW);    // Liga o LED (ativo em LOW)
+  Serial.println("LED Ligado");
+  delay(800);
+  
+  digitalWrite(LED_BUILTIN, HIGH);   // Desliga o LED
+  Serial.println("LED Desligado");
+  delay(800);
+}
