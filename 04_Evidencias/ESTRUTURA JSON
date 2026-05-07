@@ -1,0 +1,7 @@
+{
+  "temperatura": 0,
+  "umidade": 0,
+  "rotacao": 512,
+  "ir": 1,
+  "alerta": "normal"
+}
