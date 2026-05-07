@@ -40,8 +40,8 @@ Criar uma solução capaz de:
 | -------------------------- | ------ | -------------------- |
 | 01 - Configuração          | ✅      | Ambiente configurado |
 | 02 - Investigação de Pinos | ✅      | Portas analisadas    |
-| 03 - Modelagem do Sistema  | 🔄     | Em andamento         |
-| 04 - Evidências            | 🔄     | Em atualização       |
+| 03 - Modelagem do Sistema  | ✅    | Em andamento         |
+| 04 - Evidências            | ✅    | Em atualização       |
 | 05 - Atualizações          | 🔄     | Contínuo             |
 
 ---
