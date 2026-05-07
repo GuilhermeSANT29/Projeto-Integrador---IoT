@@ -88,15 +88,7 @@ A equipe optou por utilizar:
 
 ---
 
-## 📦 Exemplo de envio de dados
-
-O ESP8266 pode enviar dados de duas formas:
-
-### 🔹 Via URL (GET)
-https://script.google.com/macros/s/XXXX/exec?sensor=IR&valor=1
----
-
-### 🔹 Via JSON
+### 🔹 JSON
 
 ```json id="jsongs1"
 {
