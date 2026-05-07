@@ -18,7 +18,7 @@ http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
 ```C++ Arduino```
 ```/ Blink Test - ESP8266 Wemos D1```
-#define LED_BUILTIN D4   // GPIO2 - LED onboard
+```#define LED_BUILTIN D4   // GPIO2 - LED onboard```
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
