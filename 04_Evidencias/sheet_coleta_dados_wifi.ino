@@ -26,7 +26,7 @@ const char* password = "dudinha boboca";
 
 // =================== GOOGLE SHEETS ===================
 // Substitua pela sua URL do Web App
-const char* googleSheetsURL = "https://script.google.com/macros/s/SEU_WEB_APP_URL_AQUI/exec";
+const char* googleSheetsURL = "https://docs.google.com/spreadsheets/d/153PpU0l9JMA_RdkHmuQEGjGT3jJEFuTxbRcvwAbRFtg/edit?usp=sharing"
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -46,7 +46,7 @@ void setup() {
   setRGB(0, 0, 0);
 
   Serial.println("\n=== ETAPA 2 - Sistema IoT com Google Sheets ===");
-  Serial.println("Grupo Alpha - SENAI\n");
+  Serial.println("Grupo - SENAI\n");
 
   conectarWiFi();
 }
@@ -76,7 +76,7 @@ void loop() {
 
   // Criação do JSON
   StaticJsonDocument<400> doc;
-  doc["dispositivo"] = "ESP8266_GrupoAlpha";
+  doc["dispositivo"] = "ESP8266_WEMOS16";
   doc["temperatura"] = isnan(temperatura) ? -1 : temperatura;
   doc["umidade"] = isnan(umidade) ? -1 : umidade;
   doc["rotacao"] = rotacao;
