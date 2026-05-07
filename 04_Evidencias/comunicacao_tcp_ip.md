@@ -1,71 +1,34 @@
-# 04 - Etapa 2: Desenvolvimento da Coleta de Dados e Comunicação TCP/IP
+# Etapa 2 — Desenvolvimento da Coleta de Dados e Comunicação TCP/IP
 
-**Grupo Alpha** | **Data:** Maio de 2026
+**Grupo**  
+**Curso:** Técnico em Cibersistemas para Automação – SENAI Hermenegildo Campos de Almeida  
+**Docente:** William Belarmino da Silva  
+**Data:** Maio de 2026
 
-## Objetivo da Etapa
-Implementar a leitura dos sensores do Shield HY-M302, estruturar os dados e preparar a comunicação via Wi-Fi (TCP/IP).
+**Integrantes:**  
+- Guilherme Santos – Documentador  
+- Arthur Murilo – Programador  
+- Maria Eduarda – Analista  
+- José Henrique – Testador  
 
-## Componentes Utilizados (Shield HY-M302)
+---
 
-| Componente          | Pino     | Função                          | Status     |
-|---------------------|----------|---------------------------------|------------|
-| DHT11               | D4       | Temperatura e Umidade           | Implementado |
-| Buzzer              | D5       | Alerta sonoro                   | Implementado |
-| Receptor IR         | D6       | Controle remoto                 | Implementado |
-| LED RGB             | D4 / PWM | Indicação visual de status      | Implementado |
-| Potenciômetro       | A0       | Leitura de rotação              | Implementado |
+## 1. Objetivo da Etapa
 
-## Código Principal - Coleta de Dados (`coleta_dados.ino`)
+Desenvolver a coleta de dados dos sensores do Shield HY-M302, estruturar as informações e implementar a comunicação via rede TCP/IP utilizando o ESP8266.
 
-```cpp```
+Esta etapa representa a transição do planejamento teórico (Etapa 1) para um sistema funcional, capaz de coletar, processar e transmitir dados em tempo real.
 
-#include <DHT.h>
-#include <ArduinoJson.h>
+---
 
-#define DHTPIN D4
-#define DHTTYPE DHT11
-#define BUZZER D5
-#define IR_PIN D6
-#define POT_PIN A0
+## 2. Componentes Utilizados
 
-DHT dht(DHTPIN, DHTTYPE);
+| Componente          | Pino   | Tipo de Sinal      | Função no Projeto                     |
+|---------------------|--------|--------------------|---------------------------------------|
+| DHT11               | D4     | Digital            | Leitura de Temperatura e Umidade      |
+| Buzzer              | D5     | Saída Digital      | Alerta sonoro em situações críticas   |
+| Receptor IR         | D6     | Entrada Digital    | Detecção de comandos remotos          |
+| Potenciômetro       | A0     | Entrada Analógica  | Leitura de rotação / ajuste           |
+| LED RGB (onboard)   | D4     | Saída PWM          | Indicação visual de status            |
 
-void setup() {
-  Serial.begin(115200);
-  dht.begin();
-  pinMode(BUZZER, OUTPUT);
-  pinMode(IR_PIN, INPUT);
-  
-  Serial.println("\n=== Sistema de Monitoramento IoT - Etapa 2 ===");
-}
-
-void loop() {
-  float temperatura = dht.readTemperature();
-  float umidade = dht.readHumidity();
-  int rotacao = analogRead(POT_PIN);
-  int irValue = digitalRead(IR_PIN);
-
-  // Controle simples do Buzzer
-  if (temperatura > 30) {
-    digitalWrite(BUZZER, HIGH);
-  } else {
-    digitalWrite(BUZZER, LOW);
-  }
-
-  // Estruturação dos dados em JSON
-  StaticJsonDocument<200> doc;
-  doc["temperatura"] = temperatura;
-  doc["umidade"] = umidade;
-  doc["rotacao"] = map(rotacao, 0, 1023, 0, 100); // Converte para %
-  doc["ir_detectado"] = (irValue == LOW);
-  doc["timestamp"] = millis();
-
-  String jsonString;
-  serializeJson(doc, jsonString);
-
-  Serial.println("Dados Coletados:");
-  Serial.println(jsonString);
-  Serial.println("------------------------");
-
-  delay(2000);
-}
+---
