@@ -1,32 +1,38 @@
-# 01 - Configuração do Ambiente de Desenvolvimento
+01 - Configuração do Ambiente de Desenvolvimento
+
+**Disciplina:** Configuração, Investigação de Portas e Modelagem do Sistema  
+**Grupo Alpha**  
+**Data:** Maio de 2026
 
 ## Objetivo
-Configurar corretamente a Arduino IDE para programar o microcontrolador **ESP8266 D1** (LOLIN Wemos D1 R2 & mini) e validar a comunicação com a placa.
+Configurar corretamente o ambiente de desenvolvimento na Arduino IDE para permitir a programação do microcontrolador **ESP8266 D1** (LOLIN Wemos D1 R2 & mini) e validar a comunicação USB/serial.
 
-## Passos Executados
+## Passos Realizados
 
-1. Acessado **Arquivo → Preferências** e adicionada a URL oficial:
+### 1. Adição da URL do ESP8266
+- Acessamos **Arquivo → Preferências**
+- No campo "URLs Adicionais de Gerenciadores de Placas" adicionamos a seguinte URL:
+
+```text ```
 http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
-2. Acessado **Ferramentas → Placa → Gerenciador de Placas** e instalado o pacote **ESP8266** (versão mais recente).
+```C++ Arduino```
+```/ Blink Test - ESP8266 Wemos D1```
+#define LED_BUILTIN D4   // GPIO2 - LED onboard
 
-3. Selecionada a placa correta: **LOLIN(WEMOS) D1 R2 & mini**
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(115200);
+  Serial.println("\n=== Teste de Configuração - ESP8266 ===");
+  Serial.println("LED Builtin (D4) piscando...");
+}
 
-4. Selecionada a porta COM correspondente ao dispositivo.
-
-## Validação Prática
-- Código **Blink** carregado com sucesso.
-- LED onboard (D4) piscando corretamente.
-- Comunicação serial via Monitor Serial funcionando.
-
-**Resultado:** Ambiente totalmente configurado e operacional.
-
-## Evidências
-
-- `prints/preferencias_url.png`
-- `prints/gerenciador_placas.png`
-- `prints/placa_selecionada.png`
-- `prints/upload_blink_sucesso.png`
-- `prints/serial_monitor.png`
-
-**Status:** Concluído com sucesso ✅
+void loop() {
+  digitalWrite(LED_BUILTIN, LOW);    // Liga o LED (ativo em LOW)
+  Serial.println("LED Ligado");
+  delay(800);
+  
+  digitalWrite(LED_BUILTIN, HIGH);   // Desliga o LED
+  Serial.println("LED Desligado");
+  delay(800);
+}
