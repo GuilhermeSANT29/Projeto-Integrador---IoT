@@ -1,7 +1,17 @@
-prints para serem tirados 
+prints para serem tirados ETAPA 1
 
 01_preferencias_url.png → Janela Preferências com a URL adicionada
 02_gerenciador_placas.png → Pacote ESP8266 instalado
 03_placa_selecionada.png → Placa LOLIN(WEMOS) D1 R2 & mini selecionada
 04_upload_sucesso.png → Mensagem “Done uploading”
 05_blink_rodando.png → LED piscando + Monitor Serial
+
+---
+
+- Capturas de tela das pesquisas realizadas
+- Pinout completo do ESP8266 Wemos D1
+- Fotos do Shield HY-M302 conectado
+- Prints do Monitor Serial durante os testes
+- Evidências de testes práticos com Buzzer, IR e LED
+
+---
