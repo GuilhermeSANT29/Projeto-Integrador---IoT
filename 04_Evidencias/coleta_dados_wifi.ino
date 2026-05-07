@@ -1,6 +1,6 @@
 /*
   ETAPA 2 - Versão Final com Google Sheets
-  Grupo Alpha - SENAI Hermenegildo Campos de Almeida
+  Grupo - SENAI Hermenegildo Campos de Almeida
 */
 
 #include <ESP8266WiFi.h>
