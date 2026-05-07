@@ -12,7 +12,7 @@ void setup() {
   
   Serial.println("\n=========================================");
   Serial.println("   Teste de Configuração - ESP8266 D1   ");
-  Serial.println("   Grupo Alpha - SENAI Guarulhos        ");
+  Serial.println("   Grupo - SENAI Guarulhos        ");
   Serial.println("=========================================\n");
   
   Serial.println("LED Builtin (D4) piscando...");
