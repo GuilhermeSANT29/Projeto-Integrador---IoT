@@ -18,7 +18,6 @@
 #define LED_R      D1
 #define LED_G      D7
 #define LED_B      D8
-
 #define DHTTYPE    DHT11
 
 // =================== CONFIGURAÇÃO Wi-Fi ===================
