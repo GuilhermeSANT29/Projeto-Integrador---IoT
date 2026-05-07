@@ -18,6 +18,7 @@ Implementar a leitura dos sensores do Shield HY-M302, estruturar os dados e prep
 ## Código Principal - Coleta de Dados (`coleta_dados.ino`)
 
 ```cpp```
+
 #include <DHT.h>
 #include <ArduinoJson.h>
 
