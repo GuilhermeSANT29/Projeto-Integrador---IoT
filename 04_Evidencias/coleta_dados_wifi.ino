@@ -1,96 +1,152 @@
-```cpp
+/*
+  ETAPA 2 - Versão Final
+  Grupo Alpha - SENAI Hermenegildo Campos de Almeida
+  ESP8266 + Shield HY-M302
+*/
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <DHT.h>
 #include <ArduinoJson.h>
 
-// Definição dos pinos
-#define DHTPIN    D4
-#define BUZZER    D5
-#define IR_PIN    D6
-#define POT_PIN   A0
-#define DHTTYPE   DHT11
+// =================== PINOS ===================
+#define DHTPIN     D4
+#define BUZZER     D5
+#define IR_PIN     D6
+#define POT_PIN    A0
+#define BUTTON1    D2
+#define BUTTON2    D3
+#define LED_R      D1     // Vermelho
+#define LED_G      D7     // Verde
+#define LED_B      D8     // Azul
 
-// Credenciais Wi-Fi
-const char* ssid = "SEU_SSID";
-const char* password = "SUA_SENHA";
+#define DHTTYPE    DHT11
+
+// =================== CONFIGURAÇÃO Wi-Fi ===================
+const char* ssid = "os_compilados";
+const char* password = "dudinha boboca";
 
 DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  
+
+  // Configuração dos pinos
   pinMode(BUZZER, OUTPUT);
   pinMode(IR_PIN, INPUT);
+  pinMode(BUTTON1, INPUT_PULLUP);
+  pinMode(BUTTON2, INPUT_PULLUP);
+  pinMode(LED_R, OUTPUT);
+  pinMode(LED_G, OUTPUT);
+  pinMode(LED_B, OUTPUT);
+
   dht.begin();
 
-  Serial.println("\n=== ETAPA 2 - Sistema de Monitoramento IoT ===");
-  Serial.println("Grupo Alpha - SENAI Guarulhos\n");
+  // Desliga LEDs RGB inicialmente
+  setRGB(0, 0, 0);
 
-  // Conexão Wi-Fi
-  WiFi.begin(ssid, password);
-  Serial.print("Conectando à rede Wi-Fi");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nWi-Fi conectado com sucesso!");
-  Serial.print("Endereço IP: ");
-  Serial.println(WiFi.localIP());
+  Serial.println("\n=== ETAPA 2 - Sistema IoT Grupo Alpha ===");
+  Serial.println("Iniciando coleta de dados e comunicação...\n");
+
+  conectarWiFi();
 }
 
 void loop() {
   // Leitura dos sensores
   float temperatura = dht.readTemperature();
   float umidade = dht.readHumidity();
-  int potValue = analogRead(POT_PIN);
-  int rotacao = map(potValue, 0, 1023, 0, 100);
-  int irValue = digitalRead(IR_PIN);
+  int rotacao = map(analogRead(POT_PIN), 0, 1023, 0, 100);
+  bool irDetectado = digitalRead(IR_PIN) == LOW;
+  bool botao1 = digitalRead(BUTTON1) == LOW;
+  bool botao2 = digitalRead(BUTTON2) == LOW;
 
-  // Controle do Buzzer
-  if (temperatura > 30.0) {
+  // Controle dos atuadores
+  if (temperatura > 30.0 || botao1) {
     digitalWrite(BUZZER, HIGH);
-  } else {
+    setRGB(255, 0, 0);        // Vermelho = Alerta
+  } 
+  else if (umidade < 40.0) {
+    setRGB(0, 0, 255);        // Azul = Ambiente Seco
+    digitalWrite(BUZZER, LOW);
+  } 
+  else {
+    setRGB(0, 255, 0);        // Verde = Normal
     digitalWrite(BUZZER, LOW);
   }
 
   // Criação do JSON
-  StaticJsonDocument<300> doc;
+  StaticJsonDocument<400> doc;
   doc["dispositivo"] = "ESP8266_GrupoAlpha";
   doc["temperatura"] = isnan(temperatura) ? -1 : temperatura;
   doc["umidade"] = isnan(umidade) ? -1 : umidade;
-  doc["rotacao_percent"] = rotacao;
-  doc["ir_detectado"] = (irValue == LOW);
+  doc["rotacao"] = rotacao;
+  doc["ir_detectado"] = irDetectado;
+  doc["botao1"] = botao1;
+  doc["botao2"] = botao2;
   doc["timestamp"] = millis();
   doc["ip"] = WiFi.localIP().toString();
 
   String jsonString;
   serializeJson(doc, jsonString);
 
-  // Exibição no Serial Monitor
   Serial.println("\n--- Dados Coletados ---");
   Serial.println(jsonString);
 
-  // Envio dos dados via HTTP (TCP/IP)
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    String serverPath = "http://httpbin.org/post";   // Servidor de teste
+  // Envio dos dados
+  enviarDadosHTTP(jsonString);
 
-    http.begin(serverPath);
-    http.addHeader("Content-Type", "application/json");
-    
-    int httpResponseCode = http.POST(jsonString);
+  delay(4000); // Atualiza a cada 4 segundos
+}
 
-    if (httpResponseCode > 0) {
-      Serial.print("✅ Dados enviados com sucesso! Código: ");
-      Serial.println(httpResponseCode);
-    } else {
-      Serial.print("❌ Erro no envio. Código: ");
-      Serial.println(httpResponseCode);
-    }
-    http.end();
+// =================== FUNÇÕES AUXILIARES ===================
+void setRGB(int r, int g, int b) {
+  analogWrite(LED_R, 255 - r);
+  analogWrite(LED_G, 255 - g);
+  analogWrite(LED_B, 255 - b);
+}
+
+void conectarWiFi() {
+  WiFi.begin(ssid, password);
+  Serial.print("Conectando ao Wi-Fi");
+  unsigned long timeout = millis();
+  
+  while (WiFi.status() != WL_CONNECTED && millis() - timeout < 15000) {
+    delay(500);
+    Serial.print(".");
   }
 
-  delay(5000); // Atualiza a cada 5 segundos
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("\n✅ Wi-Fi Conectado com sucesso!");
+    Serial.print("IP: "); 
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("\n❌ Falha ao conectar no Wi-Fi!");
+  }
+}
+
+void enviarDadosHTTP(String json) {
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("⚠️ Sem conexão. Tentando reconectar...");
+    conectarWiFi();
+    return;
+  }
+
+  HTTPClient http;
+  String serverPath = "http://httpbin.org/post";   // Servidor para teste
+
+  http.begin(serverPath);
+  http.addHeader("Content-Type", "application/json");
+
+  int httpCode = http.POST(json);
+
+  if (httpCode > 0) {
+    Serial.print("✅ Dados enviados! Código: ");
+    Serial.println(httpCode);
+  } else {
+    Serial.print("❌ Erro ao enviar. Código: ");
+    Serial.println(httpCode);
+  }
+
+  http.end();
 }
