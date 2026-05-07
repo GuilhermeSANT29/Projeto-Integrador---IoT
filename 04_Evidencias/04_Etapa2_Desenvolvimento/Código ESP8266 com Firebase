@@ -1,0 +1,21 @@
+#include <FirebaseESP8266.h>
+
+// Configuração Firebase
+#define FIREBASE_HOST "seu-projeto-default-rtdb.firebaseio.com"
+#define FIREBASE_AUTH "SUA_CHAVE_DE_AUTENTICAÇÃO"
+
+FirebaseData firebaseData;
+FirebaseJson json;
+
+void enviarParaFirebase() {
+  json.set("temperatura", temperatura);
+  json.set("umidade", umidade);
+  json.set("rotacao", rotacao);
+  json.set("timestamp", millis());
+
+  if (Firebase.pushJSON(firebaseData, "/sensores/esp8266_grupoalpha", json)) {
+    Serial.println("✅ Dados enviados para Firebase!");
+  } else {
+    Serial.println("❌ Falha: " + firebaseData.errorReason());
+  }
+}
