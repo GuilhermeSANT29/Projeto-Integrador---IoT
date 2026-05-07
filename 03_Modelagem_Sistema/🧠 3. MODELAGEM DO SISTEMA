@@ -14,50 +14,57 @@ AÇÃO (LED / buzzer)
     ↓
 ENVIO (TCP/IP → API)
 
-📡 ENTRADAS DO SISTEMA
 
-os componentes:
+---
 
-Potenciômetro (A0)
-Sensor IR (D6)
-Botão (se tiver)
-LED RGB (D4)
-Buzzer (D5)
+# 📡 Entradas do Sistema
 
-⚙️ VARIÁVEIS DO SISTEMA
+Os componentes utilizados no sistema são:
 
-potenciometro → 0 a 1023
-ir → 0 ou 1
-estadoSistema → NORMAL / ALERTA
-buzzer → ligado/desligado
-led → cor/status
+- Potenciômetro (A0)
+- Sensor IR (D6)
+- Botão (opcional)
+- LED RGB (D4)
+- Buzzer (D5)
 
-🚨 REGRAS DO SISTEMA 
+---
 
-📊 REGRAS DEFINIDAS
+# ⚙️ Variáveis do Sistema
 
-🔴 REGRA 1 — ALERTA DE POTENCIÔMETRO
+O sistema trabalha com as seguintes variáveis:
+
+- `potenciometro` → valores de 0 a 1023
+- `ir` → estado digital (0 ou 1)
+- `estadoSistema` → NORMAL / ALERTA / CRÍTICO
+- `buzzer` → ligado ou desligado
+- `led` → cor ou status
+
+---
+
+# 🚨 Regras do Sistema
+
+## 🔴 Regra 1 — Alerta de Potenciômetro
 SE potenciômetro > 700
 ENTÃO estado = ALERTA
 E ligar buzzer
 E acender LED vermelho
 
-🟡 REGRA 2 — NORMALIDADE
+##🟡 REGRA 2 — NORMALIDADE
 SE potenciômetro <= 700
 ENTÃO estado = NORMAL
 E buzzer desligado
 E LED verde
 
-🔵 REGRA 3 — SENSOR IR
+##🔵 REGRA 3 — SENSOR IR
 SE IR = 1
 ENTÃO registrar evento "MOVIMENTO DETECTADO"
 E enviar para API
 
-⚠️ REGRA 4 — SEGURANÇA DO SISTEMA
+##⚠️ REGRA 4 — SEGURANÇA DO SISTEMA
 SE múltiplos alertas consecutivos
 ENTÃO estado = CRÍTICO
 
-🔄 FLUXO DE DECISÃO (O QUE VOCÊ VAI DESCREVER NO TRABALHO)
+##🔄 FLUXO DE DECISÃO (O QUE VOCÊ VAI DESCREVER NO TRABALHO)
 LER sensores
     ↓
 VERIFICAR regras
@@ -70,7 +77,12 @@ GERAR JSON
     ↓
 ENVIAR via Wi-Fi (TCP/IP)
 
-📦 EXEMPLO DE ESTADO FINAL DO SISTEMA
+
+---
+
+# 📦 Exemplo de Estado do Sistema (JSON)
+
+```json
 {
   "potenciometro": 750,
   "ir": 1,
