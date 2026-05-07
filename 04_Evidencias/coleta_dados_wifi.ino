@@ -1,6 +1,6 @@
 /*
   ETAPA 2 - Versão Final
-  Grupo Alpha - SENAI Hermenegildo Campos de Almeida
+  Grupo Os compilados - SENAI Hermenegildo Campos de Almeida
   ESP8266 + Shield HY-M302
 */
 
