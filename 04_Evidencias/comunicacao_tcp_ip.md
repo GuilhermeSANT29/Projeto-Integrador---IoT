@@ -6,10 +6,10 @@
 **Data:** Maio de 2026
 
 **Integrantes:**  
-- Guilherme Santos – Documentador  
-- Arthur Murilo – Programador  
-- Maria Eduarda – Analista  
-- José Henrique – Testador  
+- Guilherme Santos –  
+- Arthur Murilo –   
+- Maria Eduarda – 
+- José Henrique – 
 
 ---
 
