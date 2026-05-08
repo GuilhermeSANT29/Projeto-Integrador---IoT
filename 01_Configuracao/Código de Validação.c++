@@ -1,4 +1,3 @@
-C++
 /*
   Blink Test - ESP8266 Wemos16
   Validação da Configuração do Ambiente
