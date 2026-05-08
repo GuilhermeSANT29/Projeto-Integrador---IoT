@@ -1,16 +1,15 @@
 # 03 - Modelagem do Sistema
 
-**Grupo**  
-**Disciplina:**  
+**Grupo Os Compilados**  
 **Curso:** Técnico em Cibersistemas para Automação – SENAI Hermenegildo Campos de Almeida  
 **Docente:** William Belarmino da Silva  
 **Data:** Maio de 2026
 
 **Integrantes:**  
-- Guilherme Santos – 
-- Arthur Murilo – 
-- Maria Eduarda – 
-- José Henrique –   
+- Guilherme Santos – documentador
+- Arthur Murilo – programador
+- Maria Eduarda – analista
+- José Henrique – testador
 
 ---
 
