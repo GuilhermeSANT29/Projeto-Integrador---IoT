@@ -30,6 +30,29 @@ O objetivo foi identificar quais pinos podem ser utilizados com segurança, evit
 | D6         | GPIO12 | Receptor IR         | Entrada Digital     | Validado   | Detecção de comandos remotos |
 | A0         | A0     | Potenciômetro       | Entrada Analógica   | Validado   | Leitura de rotação (0-1023) |
 
+## Componentes do Shield HY-M302 Utilizados
+
+| Componente          | Pino     | Tipo de Sinal       | Função Principal |
+|---------------------|----------|---------------------|------------------|
+| DHT11               | D4       | Digital             | Leitura de Temperatura e Umidade |
+| Buzzer              | D5       | Saída Digital       | Alerta sonoro em condições críticas |
+| Receptor IR         | D6       | Entrada Digital     | Recebimento de comandos remotos |
+| LED RGB             | D4 / PWM | Saída PWM           | Indicação visual de status do sistema |
+| Potenciômetro       | A0       | Entrada Analógica   | Leitura de rotação / ajuste de variáveis |
+
+---
+
+## Regras de Funcionamento
+
+| Condição                                | Estado                | Ação Principal |
+|-----------------------------------------|-----------------------|--------------|
+| Temperatura > 30°C                      | Alerta Térmico        | Ativar buzzer + LED Vermelho |
+| Umidade < 40%                           | Ambiente Seco         | Sinalizar + registrar leitura |
+| Botão pressionado                       | Comando Manual        | Alterar estado do sistema |
+| Comando IR recebido                     | Controle Remoto       | Executar ação correspondente ao comando |
+| Rotação / Potenciômetro fora do padrão  | Falha Operacional     | Ativar alerta visual e sonoro |
+---
+
 ### Recomendações de Uso
 
 - **Pinos Recomendados (Alta prioridade):** D1, D2, D5, D6, D7  
@@ -67,9 +90,3 @@ Em um ambiente industrial, o uso incorreto de pinos pode causar:
 - Datasheet do Shield HY-M302
 - Fóruns Arduino.cc e GitHub
 - Espressif Technical Reference
-
-## Conclusão da Investigação
-
-Através desta análise técnica foi possível mapear com segurança os pinos disponíveis, evitando problemas comuns no ESP8266. Essa investigação é fundamental para garantir a estabilidade do sistema nas próximas etapas, especialmente na coleta de dados e comunicação em rede.
-
-**Status da Etapa:** Concluída e documentada com sucesso ✅
