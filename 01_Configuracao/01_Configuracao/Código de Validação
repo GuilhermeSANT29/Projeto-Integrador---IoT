@@ -1,17 +1,17 @@
 C++
 /*
-  Blink Test - ESP8266 Wemos D1
+  Blink Test - ESP8266 Wemos16
   Validação da Configuração do Ambiente
 */
 
-#define LED_BUILTIN D4   // GPIO2 - LED onboard do Wemos D1
+#define LED_BUILTIN D4   // GPIO2 - LED onboard do Wemos16
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
   
   Serial.println("\n=========================================");
-  Serial.println("   Teste de Configuração - ESP8266 D1   ");
+  Serial.println("   Teste de Configuração - ESP8266   ");
   Serial.println("   Grupo - SENAI Guarulhos        ");
   Serial.println("=========================================\n");
   
