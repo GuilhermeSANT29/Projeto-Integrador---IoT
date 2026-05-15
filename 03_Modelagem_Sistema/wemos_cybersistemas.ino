@@ -1,9 +1,3 @@
-// ======================================================
-// CYBERSISTEMAS IoT - Wemos D1 Mini
-// Design integrado do Dashboard Cybersistemas v3.0
-// DHT11 → Página web com tema neon/cyber
-// ======================================================
-
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266HTTPClient.h>
@@ -39,7 +33,7 @@ const char* password = "Senai@122";
 // ======================================================
 // IP SERVIDOR PYTHON
 // ======================================================
-String servidor = "10.106.202.43";
+String servidor = "10.106.202.20";   // IP do seu PC com o Flask
 
 // ======================================================
 // NOME SENSOR
@@ -56,6 +50,8 @@ ESP8266WebServer server(80);
 // ======================================================
 bool wifiAtivo = false;
 unsigned long tempoAnterior = 0;
+unsigned long ultimoEnvio = 0;       // controla envio a cada 10 seg
+
 
 // ======================================================
 // PEGAR DATA/HORA DO SERVIDOR PYTHON
@@ -88,6 +84,64 @@ String determinarStatus(float temp) {
   if (temp >= 40.0) return "critico";
   if (temp >= 30.0) return "alerta";
   return "normal";
+}
+
+// ======================================================
+// ENVIO DOS DADOS PARA A API FLASK (POST /data)
+// ======================================================
+void enviarDadosParaAPI() {
+  float temperatura = dht.readTemperature();
+  float umidade     = dht.readHumidity();
+  String ipStr      = WiFi.localIP().toString();
+
+  if (isnan(temperatura)) {
+    Serial.println("Erro de leitura DHT");
+    return;
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("WiFi não conectado");
+    return;
+  }
+
+  WiFiClient client;
+  HTTPClient http;
+
+  String url = "http://" + servidor + ":5000/data";
+  http.begin(client, url);
+  http.setTimeout(5000);   // 5 segundos de timeout
+
+  // monta JSON para enviar
+  String json = "{"
+    "\"temp\":" + String(temperatura, 1) + ","
+    "\"rot\":0,"
+    "\"ir\":0,"
+    "\"status\":\"" + determinarStatus(temperatura) + "\","
+    "\"ip\":\"" + ipStr + "\""
+  "}";
+
+  Serial.print("Enviando JSON: ");
+  Serial.println(json);
+
+  http.addHeader("Content-Type", "application/json");
+  http.addHeader("Authorization", "CyberProject");
+
+  int httpCode = http.POST(json);
+
+  if (httpCode > 0) {
+    if (httpCode == 201) {
+      Serial.println("✅ Dados enviados com sucesso para o servidor!");
+    } else {
+      Serial.print("🟢 HTTP não 201: ");
+      Serial.println(httpCode);
+      Serial.println(http.getString());
+    }
+  } else {
+    Serial.print("❌ Erro HTTP: ");
+    Serial.println(httpCode);
+  }
+
+  http.end();
 }
 
 // ======================================================
@@ -439,7 +493,6 @@ void setup() {
 // LOOP
 // ======================================================
 void loop() {
-
   // LEITURA SENSOR a cada 2s
   if (millis() - tempoAnterior > 2000) {
     float temperatura = dht.readTemperature();
@@ -467,7 +520,7 @@ void loop() {
         tone(BUZZER, 1000, 500);
         delay(600);
         tone(BUZZER, 1500, 300);
-      // BEEP simples se temperatura normal (< 27°C) — comportamento original
+      // BEEP simples se temperatura normal (< 27°C)
       } else if (temperatura < 27.0) {
         digitalWrite(BUZZER, HIGH);
         delay(200);
@@ -517,6 +570,12 @@ void loop() {
     Serial.println("WiFi desconectado!");
     Serial.println("========================");
     delay(1000);
+  }
+
+  // ENVIO DOS DADOS PARA A API A CADA 10s
+  if (wifiAtivo && (millis() - ultimoEnvio) > 10000) {
+    enviarDadosParaAPI();
+    ultimoEnvio = millis();
   }
 
   // SERVIDOR WEB

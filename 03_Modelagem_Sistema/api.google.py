@@ -34,8 +34,8 @@ TOKEN = "CyberProject"
 conexao = pyodbc.connect(
 
     'DRIVER={SQL Server};'
-    'SERVER=.\SQLEXPRESS;'
-    'DATABASE=MonitoramentoIoT;'
+    'SERVER=.\\SQLEXPRESS;'
+    'DATABASE=ProjetoIoT;'
     'Trusted_Connection=yes;'
 )
 
@@ -50,7 +50,13 @@ print("✅ SQL Server conectado!")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-credenciais = os.path.join(BASE_DIR, "credentials.json")
+# ARQUIVO JSON DA GOOGLE API
+credenciais = os.path.join(
+
+    BASE_DIR,
+
+    "credentials.json.json"
+)
 
 scope = [
 
@@ -58,6 +64,11 @@ scope = [
 
     "https://www.googleapis.com/auth/drive"
 ]
+
+
+# ==================================================
+# LOGIN GOOGLE
+# ==================================================
 
 creds = ServiceAccountCredentials.from_json_keyfile_name(
 
@@ -67,7 +78,12 @@ creds = ServiceAccountCredentials.from_json_keyfile_name(
 
 client = gspread.authorize(creds)
 
-sheet = client.open("").sheet1
+
+# ==================================================
+# PLANILHA
+# ==================================================
+
+sheet = client.open("TemperaturaESP").sheet1
 
 print("✅ Google Sheets conectado!")
 
@@ -83,7 +99,7 @@ def home():
 
 
 # ==================================================
-# DATA/HORA
+# DATA / HORA
 # ==================================================
 
 @app.route("/hora")
@@ -96,7 +112,7 @@ def hora():
 
 
 # ==================================================
-# RECEBER DADOS DO ESP
+# RECEBER DADOS ESP8266
 # ==================================================
 
 @app.route("/data", methods=["POST"])
@@ -105,9 +121,11 @@ def receber():
     try:
 
         print("================================")
-        print("NOVA REQUISIÇÃO")
+        print("📡 NOVA REQUISIÇÃO")
 
+        # ==========================================
         # TOKEN
+        # ==========================================
 
         if request.headers.get("Authorization") != TOKEN:
 
@@ -119,13 +137,17 @@ def receber():
 
             }), 401
 
+        # ==========================================
         # JSON
+        # ==========================================
 
         data = request.json or {}
 
         print(data)
 
+        # ==========================================
         # DADOS
+        # ==========================================
 
         temperatura = data.get("temp", 0)
 
@@ -143,7 +165,9 @@ def receber():
 
         agora = datetime.now()
 
-        # LOG
+        # ==========================================
+        # LOGS
+        # ==========================================
 
         print("IP:", ip)
         print("Temperatura:", temperatura)
@@ -151,9 +175,9 @@ def receber():
         print("IR:", ir)
         print("Status:", status)
 
-        # ==================================================
+        # ==========================================
         # SQL SERVER
-        # ==================================================
+        # ==========================================
 
         cursor.execute("""
 
@@ -181,9 +205,9 @@ VALUES (?, ?, ?, ?)
 
         print("✅ Dados salvos no SQL Server!")
 
-        # ==================================================
+        # ==========================================
         # GOOGLE SHEETS
-        # ==================================================
+        # ==========================================
 
         sheet.append_row([
 
@@ -279,7 +303,7 @@ if __name__ == "__main__":
 
     print("================================")
     print("🚀 API INICIADA")
-    print("http://10.106.202.20:5000")
+    print("🌐 http://10.106.202.20:5000")
     print("================================")
 
     app.run(
