@@ -148,4 +148,4 @@ def receive_data():
 
 if __name__ == "__main__":
     print("🚀 Iniciando API Integrada (MySQL + Sheets)...")
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="10.106.208.30", port=5000, debug=True)
