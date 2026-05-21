@@ -65,7 +65,7 @@ def validate_sensor_data(data):
 # ==================================================
 # ENDPOINT PRINCIPAL: RECEBIMENTO DE DADOS
 # ==================================================
-@app.route("/data", methods=["POST"])
+@app.route("/receive_data", methods=["POST"])
 def receive_data():
     print("\n=============================================")
     print("📥 NOVA REQUISIÇÃO RECEBIDA DO ESP8266")
@@ -148,4 +148,5 @@ def receive_data():
 
 if __name__ == "__main__":
     print("🚀 Iniciando API Integrada (MySQL + Sheets)...")
-    app.run(host="10.106.208.30", port=5000, debug=True)
+    # Configurado em 0.0.0.0 para aceitar conexões da rede e na porta 5000 para casar com o ESP8266!
+    app.run(host="0.0.0.0", port=5000, debug=True)
