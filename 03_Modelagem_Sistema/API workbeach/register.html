@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CyberProject — Cadastro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #050a0f;
+      --surface:   #0b1520;
+      --border:    #1a3a5c;
+      --accent:    #00c8ff;
+      --accent2:   #00ff9d;
+      --danger:    #ff3b5c;
+      --success:   #00ff9d;
+      --text:      #c8dce8;
+      --text-dim:  #4a7a9b;
+      --mono:      'Share Tech Mono', monospace;
+      --sans:      'Rajdhani', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--sans);
+      color: var(--text);
+      overflow-x: hidden;
+      position: relative;
+      padding: 24px 16px;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridPan 20s linear infinite;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(ellipse, rgba(0,255,157,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    @keyframes gridPan {
+      0%   { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.08) 3px,
+        rgba(0,0,0,0.08) 4px
+      );
+      z-index: 999;
+    }
+
+    .register-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 460px;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--accent2);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      box-shadow: 0 0 20px rgba(0,255,157,0.3), inset 0 0 20px rgba(0,255,157,0.05);
+      animation: pulse2 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse2 {
+      0%,100% { box-shadow: 0 0 20px rgba(0,255,157,0.3), inset 0 0 20px rgba(0,255,157,0.05); }
+      50%      { box-shadow: 0 0 35px rgba(0,255,157,0.5), inset 0 0 30px rgba(0,255,157,0.1); }
+    }
+
+    .logo-icon svg { width: 28px; height: 28px; }
+
+    .logo-title {
+      font-family: var(--mono);
+      font-size: 20px;
+      letter-spacing: 4px;
+      color: var(--accent2);
+      text-shadow: 0 0 20px rgba(0,255,157,0.4);
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent2), var(--accent), transparent);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-family: var(--mono);
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    /* Alertas */
+    .alert {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+
+    .alert-error {
+      background: rgba(255,59,92,0.1);
+      border: 1px solid rgba(255,59,92,0.4);
+      color: var(--danger);
+      animation: shake 0.4s ease;
+    }
+
+    .alert-success {
+      background: rgba(0,255,157,0.08);
+      border: 1px solid rgba(0,255,157,0.4);
+      color: var(--accent2);
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%,60%  { transform: translateX(-6px); }
+      40%,80%  { transform: translateX(6px); }
+    }
+
+    /* Formulário */
+    .form-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 11px;
+      font-family: var(--mono);
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .input-wrapper { position: relative; }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      transition: color 0.2s;
+      pointer-events: none;
+    }
+
+    .input-wrapper:focus-within .input-icon { color: var(--accent2); }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      background: rgba(0,255,157,0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 14px 13px 42px;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent2);
+      background: rgba(0,255,157,0.05);
+      box-shadow: 0 0 0 3px rgba(0,255,157,0.1);
+    }
+
+    /* Indicador de força de senha */
+    .strength-bar {
+      height: 3px;
+      border-radius: 2px;
+      background: var(--border);
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    .strength-label {
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--text-dim);
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* Botão */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #006640, rgba(0,255,157,0.1));
+      border: 1px solid var(--accent2);
+      border-radius: 8px;
+      color: var(--accent2);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 6px;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #007a4d, rgba(0,255,157,0.15));
+      box-shadow: 0 0 24px rgba(0,255,157,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active { transform: translateY(0); }
+
+    /* Divisor com requisitos */
+    .requirements {
+      background: rgba(0,200,255,0.04);
+      border: 1px solid rgba(0,200,255,0.12);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 4px;
+    }
+
+    .req-title {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .req-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .req-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+
+    .req-item.valid { color: var(--accent2); }
+    .req-item.invalid { color: var(--danger); }
+
+    .req-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .req-item.valid   .req-dot { background: var(--accent2); }
+    .req-item.invalid .req-dot { background: var(--danger); }
+
+    .card-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    .card-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .card-footer a:hover { opacity: 0.75; text-decoration: underline; }
+
+    .status-bar {
+      margin-top: 20px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.2; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scanlines"></div>
+
+  <div class="register-container">
+
+    <div class="logo-area">
+      <div class="logo-icon">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="10" r="5" stroke="#00ff9d" stroke-width="1.5"/>
+          <path d="M4 24c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#00ff9d" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M20 6l2 2M22 6l-2 2" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="logo-title">CYBERPROJECT</div>
+      <div class="logo-sub">Novo Registro de Operador</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">// Criar Credenciais de Acesso</div>
+
+      {% if error %}
+      <div class="alert alert-error">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;margin-top:1px">
+          <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 4.5zm0 8a1 1 0 110-2 1 1 0 010 2z"/>
+        </svg>
+        {{ error }}
+      </div>
+      {% endif %}
+
+      {% if success %}
+      <div class="alert alert-success">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="flex-shrink:0;margin-top:1px">
+          <path d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.28 5.28l-4 4a.75.75 0 01-1.06 0l-1.5-1.5a.75.75 0 111.06-1.06L6.75 8.69l3.47-3.47a.75.75 0 111.06 1.06z"/>
+        </svg>
+        {{ success }} &nbsp;<a href="/login" style="color:inherit;text-decoration:underline">→ Ir para Login</a>
+      </div>
+      {% endif %}
+
+      <form method="POST" action="/register" autocomplete="off" id="registerForm">
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label for="username">Nome de Usuário</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="operador_01"
+                required
+                minlength="3"
+                maxlength="50"
+                autocomplete="off"
+              />
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 8a3 3 0 100-6 3 3 0 000 6zm0 1c-3.31 0-6 1.79-6 4v.5h12V13c0-2.21-2.69-4-6-4z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Senha</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                required
+                minlength="6"
+                autocomplete="new-password"
+              />
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M11 5a3 3 0 00-6 0v1H4v7h8V6h-1V5zm-5 0a2 2 0 114 0v1H6V5zm2 5.5a1 1 0 110-2 1 1 0 010 2z"/>
+                </svg>
+              </span>
+            </div>
+            <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+            <div class="strength-label" id="strengthLabel">Força da senha</div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirm_password">Confirmar Senha</label>
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                placeholder="••••••••"
+                required
+                autocomplete="new-password"
+              />
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M12.5 4.5a4.5 4.5 0 01-6.9 3.79L3 10.88 2.12 10l2.6-2.6A4.5 4.5 0 117.5 9a4.47 4.47 0 01-2.21-.59L3 10.88M7.5 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- Requisitos de senha -->
+          <div class="requirements">
+            <div class="req-title">Requisitos</div>
+            <ul class="req-list">
+              <li class="req-item" id="req-len">
+                <span class="req-dot"></span>Mínimo de 6 caracteres
+              </li>
+              <li class="req-item" id="req-upper">
+                <span class="req-dot"></span>Ao menos uma letra maiúscula
+              </li>
+              <li class="req-item" id="req-num">
+                <span class="req-dot"></span>Ao menos um número
+              </li>
+              <li class="req-item" id="req-match">
+                <span class="req-dot"></span>Senhas coincidem
+              </li>
+            </ul>
+          </div>
+
+          <button type="submit" class="btn-submit">+ &nbsp;Registrar Operador</button>
+        </div>
+      </form>
+
+      <div class="card-footer">
+        Já tem acesso? &nbsp;<a href="/login">Fazer Login</a>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <span class="status-dot"></span>
+      CADASTRO SEGURO &nbsp;·&nbsp; HASH bcrypt &nbsp;·&nbsp; SQL SERVER
+    </div>
+
+  </div>
+
+  <script>
+    const pwInput   = document.getElementById('password');
+    const cfInput   = document.getElementById('confirm_password');
+    const fill      = document.getElementById('strengthFill');
+    const label     = document.getElementById('strengthLabel');
+    const reqLen    = document.getElementById('req-len');
+    const reqUpper  = document.getElementById('req-upper');
+    const reqNum    = document.getElementById('req-num');
+    const reqMatch  = document.getElementById('req-match');
+
+    function setReq(el, valid) {
+      el.classList.toggle('valid', valid);
+      el.classList.toggle('invalid', !valid && pwInput.value.length > 0);
+    }
+
+    function updateStrength() {
+      const pw  = pwInput.value;
+      const cfm = cfInput.value;
+
+      const hasLen   = pw.length >= 6;
+      const hasUpper = /[A-Z]/.test(pw);
+      const hasNum   = /[0-9]/.test(pw);
+      const matches  = pw === cfm && cfm.length > 0;
+
+      setReq(reqLen,   hasLen);
+      setReq(reqUpper, hasUpper);
+      setReq(reqNum,   hasNum);
+      setReq(reqMatch, matches);
+
+      const score = [hasLen, hasUpper, hasNum, pw.length >= 10].filter(Boolean).length;
+      const pct   = pw.length === 0 ? 0 : Math.min(100, score * 25 + 5);
+
+      fill.style.width = pct + '%';
+
+      if (pw.length === 0) {
+        fill.style.background = 'transparent';
+        label.textContent = 'Força da senha';
+        label.style.color = 'var(--text-dim)';
+      } else if (score <= 1) {
+        fill.style.background = '#ff3b5c';
+        label.textContent = 'Fraca';
+        label.style.color = '#ff3b5c';
+      } else if (score === 2) {
+        fill.style.background = '#ffb347';
+        label.textContent = 'Razoável';
+        label.style.color = '#ffb347';
+      } else if (score === 3) {
+        fill.style.background = '#00c8ff';
+        label.textContent = 'Boa';
+        label.style.color = '#00c8ff';
+      } else {
+        fill.style.background = '#00ff9d';
+        label.textContent = 'Forte';
+        label.style.color = '#00ff9d';
+      }
+    }
+
+    pwInput.addEventListener('input', updateStrength);
+    cfInput.addEventListener('input', updateStrength);
+  </script>
+</body>
+</html>
