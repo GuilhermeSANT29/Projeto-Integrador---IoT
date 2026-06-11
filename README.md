@@ -1,6 +1,6 @@
 # 🚀 Projeto Integrador - IoT Grupo Os compilados
 
-![Status](https://img.shields.io/badge/status-em%20finalizado-green)
+![Status](https://img.shields.io/badge/status-%20finalizado-green)
 ![Versão](https://img.shields.io/badge/version-1.0-blue)
 ![Plataforma](https://img.shields.io/badge/platform-ESP8266-green)
 ![Licença](https://img.shields.io/badge/license-Acadêmico-lightgrey)
