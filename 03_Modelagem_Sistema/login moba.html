@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberProject — Login</title>
+  <link
+    href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap)"
+    rel="stylesheet"
+  >
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --neon-blue:  #00f2ff;
+      --neon-green: #00ff41;
+      --neon-red:   #ff003c;
+      --bg-dark:    #0a0a0f;
+      --bg-card:    rgba(20, 20, 30, 0.98);
+      --border:     rgba(0, 255, 65, 0.25);
+    }
+
+    body {
+      font-family: 'Fira Code', monospace;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+      color: #e5e5e5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* Em telas muito pequenas, reduz o padding */
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.75rem 1.25rem;
+        border-radius: 1rem;
+      }
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-title {
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.15em;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      opacity: 0.5;
+      letter-spacing: 0.2em;
+      margin-top: 0.4rem;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      opacity: 0.45;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(0, 255, 65, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.85rem 1rem;
+      color: #e5e5e5;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+      /* Evita zoom automático no iOS ao focar */
+      font-size: max(16px, 0.95rem);
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: transparent;
+      border: 2px solid var(--neon-green);
+      border-radius: 0.75rem;
+      color: var(--neon-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      padding: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-submit:hover,
+    .btn-submit:focus {
+      background: var(--neon-green);
+      color: #0a0a0f;
+    }
+
+    .error-msg {
+      background: rgba(255, 0, 60, 0.1);
+      border: 1px solid var(--neon-red);
+      border-radius: 0.75rem;
+      color: var(--neon-red);
+      font-size: 0.8rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+
+    .footer-link a {
+      color: var(--neon-blue);
+      text-decoration: none;
+      opacity: 1;
+    }
+
+    .footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    .status-bar {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      opacity: 0.35;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+
+    <div class="brand">
+      <div class="brand-title">CYBERPROJECT</div>
+      <div class="brand-sub">SISTEMA DE MONITORAMENTO INDUSTRIAL</div>
+    </div>
+
+    <div class="section-label">// AUTENTICAÇÃO DE ACESSO</div>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+
+      <div class="field">
+        <label for="username">IDENTIFICADOR</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="seu_usuario"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="password">SENHA DE ACESSO</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          required
+        >
+      </div>
+
+      <button type="submit" class="btn-submit">▶ ACESSAR SISTEMA</button>
+
+    </form>
+
+    <div class="footer-link">
+      Sem acesso? <a href="/register">Solicitar Cadastro</a>
+    </div>
+
+    <div class="status-bar">
+      API ONLINE · SESP8266 CONECTADO · SQL SERVER ATIVO
+    </div>
+
+  </div>
+</body>
+</html>

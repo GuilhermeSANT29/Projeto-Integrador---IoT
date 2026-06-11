@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberProject — Registro</title>
+  <link
+    href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&display=swap)"
+    rel="stylesheet"
+  >
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --neon-blue:  #00f2ff;
+      --neon-green: #00ff41;
+      --neon-red:   #ff003c;
+      --bg-card:    rgba(20, 20, 30, 0.98);
+      --border:     rgba(0, 255, 65, 0.25);
+    }
+
+    body {
+      font-family: 'Fira Code', monospace;
+      background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+      color: #e5e5e5;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 1.75rem 1.25rem;
+        border-radius: 1rem;
+      }
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-title {
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.15em;
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      opacity: 0.5;
+      letter-spacing: 0.15em;
+      margin-top: 0.4rem;
+    }
+
+    .section-label {
+      font-size: 0.65rem;
+      opacity: 0.45;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      opacity: 0.6;
+      margin-bottom: 0.5rem;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(0, 255, 65, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.85rem 1rem;
+      color: #e5e5e5;
+      font-family: 'Fira Code', monospace;
+      /* Evita zoom automático no iOS */
+      font-size: max(16px, 0.95rem);
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: var(--neon-green);
+    }
+
+    /* Indicador de força de senha */
+    .strength-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .strength-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 2px;
+      transition: width 0.3s, background 0.3s;
+    }
+
+    /* Requisitos de senha */
+    .requirements {
+      background: rgba(0, 255, 65, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.72rem;
+    }
+
+    .requirements p {
+      margin-bottom: 0.3rem;
+      opacity: 0.5;
+      letter-spacing: 0.05em;
+    }
+
+    .requirements p.ok {
+      opacity: 1;
+      color: var(--neon-green);
+    }
+
+    .requirements p::before {
+      content: '○ ';
+    }
+
+    .requirements p.ok::before {
+      content: '● ';
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: transparent;
+      border: 2px solid var(--neon-green);
+      border-radius: 0.75rem;
+      color: var(--neon-green);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      padding: 0.9rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-submit:hover,
+    .btn-submit:focus {
+      background: var(--neon-green);
+      color: #0a0a0f;
+    }
+
+    .error-msg {
+      background: rgba(255, 0, 60, 0.1);
+      border: 1px solid var(--neon-red);
+      border-radius: 0.75rem;
+      color: var(--neon-red);
+      font-size: 0.8rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      text-align: center;
+    }
+
+    .footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+
+    .footer-link a {
+      color: var(--neon-blue);
+      text-decoration: none;
+      opacity: 1;
+    }
+
+    .footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    .status-bar {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.6rem;
+      opacity: 0.35;
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+
+    <div class="brand">
+      <div class="brand-title">CYBERPROJECT</div>
+      <div class="brand-sub">NOVO REGISTRO DE OPERADOR</div>
+    </div>
+
+    <div class="section-label">// CRIAR CREDENCIAIS DE ACESSO</div>
+
+    {% if error %}
+      <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/register" id="registerForm">
+
+      <div class="field">
+        <label for="username">NOME DE USUÁRIO</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="operador_01"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="password">SENHA</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          required
+        >
+        <div class="strength-bar">
+          <div class="strength-fill" id="strengthFill"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="confirm_password">CONFIRMAR SENHA</label>
+        <input
+          type="password"
+          id="confirm_password"
+          name="confirm_password"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          required
+        >
+      </div>
+
+      <div class="requirements">
+        <p id="req-len">Mínimo de 6 caracteres</p>
+        <p id="req-upper">Ao menos uma letra maiúscula</p>
+        <p id="req-num">Ao menos um número</p>
+        <p id="req-match">Senhas coincidem</p>
+      </div>
+
+      <button type="submit" class="btn-submit">+ REGISTRAR OPERADOR</button>
+
+    </form>
+
+    <div class="footer-link">
+      Já tem acesso? <a href="/login">Fazer Login</a>
+    </div>
+
+    <div class="status-bar">
+      CADASTRO SEGURO · HASH bcrypt · SQL SERVER
+    </div>
+
+  </div>
+
+  <script>
+    const pwdInput    = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm_password');
+    const fill        = document.getElementById('strengthFill');
+
+    const reqLen   = document.getElementById('req-len');
+    const reqUpper = document.getElementById('req-upper');
+    const reqNum   = document.getElementById('req-num');
+    const reqMatch = document.getElementById('req-match');
+
+    function updateRequirements() {
+      const pwd     = pwdInput.value;
+      const confirm = confirmInput.value;
+
+      const hasLen   = pwd.length >= 6;
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasNum   = /[0-9]/.test(pwd);
+      const matches  = pwd === confirm && pwd.length > 0;
+
+      reqLen.classList.toggle('ok', hasLen);
+      reqUpper.classList.toggle('ok', hasUpper);
+      reqNum.classList.toggle('ok', hasNum);
+      reqMatch.classList.toggle('ok', matches);
+
+      // Força da senha (0–3 critérios)
+      const score = [hasLen, hasUpper, hasNum].filter(Boolean).length;
+      const colors = ['#ff003c', '#ff9500', '#00ff41'];
+      const widths = ['33%', '66%', '100%'];
+
+      if (pwd.length === 0) {
+        fill.style.width = '0%';
+      } else {
+        fill.style.width  = widths[score - 1] || '33%';
+        fill.style.background = colors[score - 1] || '#ff003c';
+      }
+    }
+
+    pwdInput.addEventListener('input', updateRequirements);
+    confirmInput.addEventListener('input', updateRequirements);
+  </script>
+</body>
+</html>
