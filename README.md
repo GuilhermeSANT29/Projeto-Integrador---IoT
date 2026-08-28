@@ -1,69 +1,79 @@
-# 🚀 Projeto Integrador - IoT Grupo Os compilados
+# Projeto Integrador — IoT Monitoring System
 
-![Status](https://img.shields.io/badge/status-%20finalizado-green)
-![Versão](https://img.shields.io/badge/version-1.0-blue)
-![Plataforma](https://img.shields.io/badge/platform-ESP8266-green)
-![Licença](https://img.shields.io/badge/license-Acadêmico-lightgrey)
+**Status:** Finalizado · **Versão:** 1.0 · **Plataforma:** ESP8266
 
----
+Sistema de monitoramento de temperatura desenvolvido como projeto acadêmico, integrando **IoT, REST API, banco de dados, autenticação e visualização de dados**.
 
-## 👥 Integrantes
+## Visão geral
 
-* Guilherme Santos
-* Arthur Murilo
-* Maria Eduarda
-* Jose Henrique
+O sistema coleta dados de temperatura por meio de um ESP8266 e disponibiliza as informações para armazenamento, consulta e visualização. Os registros históricos são enviados para o banco de dados e para o Google Sheets. O sistema também possui autenticação para acesso à interface web e um mecanismo de alerta para condições críticas.
 
----
+## Arquitetura
 
-## 📌 Descrição
+```text
+Sensor / ESP8266
+       │
+       ▼
+Coleta de temperatura
+       │
+       ▼
+REST API / Integração
+       │
+       ├──────────────► Banco de Dados
+       │
+       └──────────────► Google Sheets
+       │
+       ▼
+Interface Web + Autenticação
+       │
+       ▼
+Alertas / Monitoramento
+```
 
-This project focuses on the development of an intelligent monitoring system utilizing the ESP8266 microcontroller, integrated with a REST API, a database, and Google Sheets for real-time storage and visualization.
+## Funcionalidades
 
-An Arduino equipped with an integrated shield captures ambient temperature data and transmits it to the system. Upon establishing an internet connection, the device hosts a local web server accessible via its IP address, displaying the current room temperature with a 20-second refresh interval. Historical temperature records are concurrently logged to both Google Sheets and the database. The system features an automated alarm mechanism that triggers during critical temperature anomalies. To secure access to the web interface, a user authentication system (registration and login) was implemented, with credentials stored directly within the database.
+- Coleta de temperatura em tempo real
+- Conectividade de rede pelo ESP8266
+- Servidor web local para visualização
+- Integração com REST API
+- Persistência de dados em banco
+- Registro histórico no Google Sheets
+- Autenticação de usuários
+- Mecanismo de alerta para anomalias de temperatura
 
----
+## Tecnologias
 
-## 🎯 Objetivo
+- ESP8266 / Wemos
+- Arduino IDE
+- REST API
+- Google Cloud API
+- Google Sheets
+- Banco de dados / SQL
+- Sistema de autenticação
 
-Criar uma solução capaz de:
+## Organização do repositório
 
-* 📡 Coletar dados em tempo real (sensores)
-* ⚙️ Processar informações automaticamente
-* 💾 Armazenar dados em banco
-* 🌐 Disponibilizar dados remotamente via API
-* 📊 Integrar com Google Sheets para visualização
+A estrutura original foi preservada e organizada por etapa do desenvolvimento:
 
----
+| Diretório | Finalidade |
+| --- | --- |
+| `01_Configuracao/` | Configuração inicial do ambiente e hardware |
+| `02_Investigacao_Pinos/` | Investigação e testes dos pinos |
+| `03_Modelagem_Sistema/` | Modelagem e definição da solução |
+| `04_Evidencias/` | Evidências de funcionamento e testes |
+| `05_Atualizacoes/` | Registro de atualizações do projeto |
 
-## 🧩 Etapas do Projeto
+## Equipe
 
-| Etapa                      | Status | Descrição            |
-| -------------------------- | ------ | -------------------- |
-| 01 - Configuração          | ✅      | Ambiente configurado |
-| 02 - Investigação de Pinos | ✅      | Portas analisadas    |
-| 03 - Modelagem do Sistema  | ✅    | Em andamento         |
-| 04 - Evidências            | ✅    | Em atualização       |
-| 05 - Atualizações          | 🔄     | Contínuo             |
+- Guilherme Santos
+- Arthur Murilo
+- Maria Eduarda
+- Jose Henrique
 
----
+## Contexto
 
-## 🛠️ Tecnologias Utilizadas
+Projeto desenvolvido para fins acadêmicos. Além do objetivo educacional, o sistema demonstra integração entre **hardware, redes, APIs, dados e autenticação**, competências relacionadas ao meu foco em Software Engineering e Security Engineering.
 
-* 💡 ESP8266_wemos16
-* 🧰 Arduino IDE
-* 🔗 Google Cloud API REST
-* 📊 Google Sheets
-* 🗄️ Banco de Dados
+## Licença
 
----
-
-## 📄 Licença
-
-Este projeto é destinado exclusivamente para fins acadêmicos.
-
----
-
-## ⭐ Contribuição
-
-Este projeto foi desenvolvido como parte de um teste Academico.
+Projeto acadêmico. Consulte o arquivo `LICENSE` para os termos aplicáveis.
